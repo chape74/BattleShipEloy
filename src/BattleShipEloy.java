@@ -4,22 +4,29 @@ import java.util.Scanner;
 public class BattleShipEloy {
     public static void main(String[] args) {
         char[][][][] boards = new char[2][2][10][10];
-        String[] hit = {"",""};
-        int victory=0;
-        int turn=0;
+        int[][] hp = new int[2][5];
+        boolean[][] sinks = new boolean[2][5];
+        String[] hit = {"", ""};
+        boolean victory = false;
+        int turn = 1;
         waterBoard(boards);
-        int gamemode = menu();
+        int gameMode = menu();
 
         int difficulty = 0;
-        if (gamemode == 2) difficulty = difMenu();
+        if (gameMode == 2) difficulty = difMenu();
 
         placeBoats(boards, difficulty);
 
-        while (victory==0){
-            turn(turn,boards,hit);
-            if (turn==0) turn=1;
-            else turn=0;
+        while (!victory) {
+            if (turn == 0) turn = 1;
+            else turn = 0;
+            turn(turn, boards, hit, hp, sinks);
+            victory = check(turn, sinks);
         }
+
+        clear();
+        display(turn, 1, boards);
+        System.out.println("Player " + (turn + 1) + " Won!");
 
     }
 
@@ -40,7 +47,7 @@ public class BattleShipEloy {
         clear();
         System.out.println("**************************");
         System.out.println("* Welcome to BattleShip! *");
-        System.out.println("* Select gamemode:       *");
+        System.out.println("* Select a game mode:    *");
         System.out.println("* 1- Player vs Player    *");
         System.out.println("* 2- Player vs Computer  *");
         System.out.println("* 3- Rules               *");
@@ -54,7 +61,7 @@ public class BattleShipEloy {
         return Integer.parseInt(selection);
     }
 
-    public static int difMenu(){
+    public static int difMenu() {
         String selection;
         clear();
         System.out.println("**************************");
@@ -80,7 +87,7 @@ public class BattleShipEloy {
 
     public static String askCor() {
         Scanner sc = new Scanner(System.in);
-        return sc.next().toUpperCase()+" ";
+        return sc.next().toUpperCase() + "  ";
     }
 
     public static void placeBoats(char[][][][] boards, int difficulty) {
@@ -101,7 +108,7 @@ public class BattleShipEloy {
         display(player, 0, boards);
         System.out.print("Player " + (player + 1) + " place your " + type + ": ");
         String cor;
-        if (player >= 0 && difficulty > 0) {
+        if (true || player == 1 && difficulty > 0) {
             cor = botPlace();
         } else cor = askCor();
         if (cor.charAt(0) > '9') {
@@ -111,6 +118,7 @@ public class BattleShipEloy {
                 && (cor.charAt(1) >= 'A' && cor.charAt(1) <= 'J')
                 && (cor.charAt(2) == 'V' || cor.charAt(2) == 'H'))) {
             boat(player, type, boards, difficulty);
+            return;
         }
         int size = 0;
         switch (type) {
@@ -135,15 +143,15 @@ public class BattleShipEloy {
         } else if (cor.charAt(1) - 'A' + size > 9) {
             cor = fix(cor, 1, size);
         }
-        boolean collision = false;
 
+        boolean collision = false;
         for (int i = 0; i < size; i++) {
             if (cor.charAt(2) == 'V')
                 collision = boards[player][0][cor.charAt(0) - '0' + i][cor.charAt(1) - 'A'] != '~';
-            else
+            else if (cor.charAt(2) == 'H')
                 collision = boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A' + i] != '~';
+            else collision = true;
             if (collision) break;
-
         }
         if (collision) boat(player, type, boards, difficulty);
         else {
@@ -155,15 +163,28 @@ public class BattleShipEloy {
         }
     }
 
-    public static void turn(int player, char[][][][] boards,String[] hit) {
+    public static void turn(int player, char[][][][] boards, String[] hit, int[][] hp, boolean[][] sinks) {
         clear();
-        display(player,0, boards);
-        display(player,1, boards);
+        display(player, 0, boards);
+        display(player, 1, boards);
         int rival = 0;
-        if (player==0) rival=1;
+        if (player == 0) rival = 1;
 
-        if (!hit[player].equals("")) System.out.println("HIT! you hit a "+hit[player]+"!");
-        if (!hit[rival].equals("")) System.out.println("Your "+hit[rival]+" got hit!");
+        healthCalc(hp, boards);
+
+        if (!hit[player].equals("")) System.out.println("HIT! you hit a " + hit[player] + "!");
+        if (!hit[rival].equals("")) System.out.println("Your " + hit[rival] + " got hit!");
+
+        for (int i = 0; i < hp[0].length; i++) {
+            if (!sinks[player][i] && hp[player][i] == 0) {
+                System.out.println("Destroyed! you got a " + hit[player] + "!");
+            }
+            if (!sinks[rival][i] && hp[rival][i] == 0) {
+                sinks[player][i] = true;
+                System.out.println("You lost your " + hit[player] + "!");
+            }
+        }
+
         System.out.print("Player " + (player + 1) + ", where do you shoot?: ");
         String cor = askCor();
         if (cor.charAt(0) > '9') {
@@ -171,31 +192,53 @@ public class BattleShipEloy {
         }
         if (!((cor.charAt(0) >= '0' && cor.charAt(0) <= '9')
                 && (cor.charAt(1) >= 'A' && cor.charAt(1) <= 'J'))) {
-            turn(player, boards,hit);
+            turn(player, boards, hit, hp, sinks);
+            return;
         }
-        if (boards[player][1][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == '~') hit[player] = torpedo(player,cor,boards);
-        else turn(player,boards,hit);
+        if (boards[player][1][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == '~')
+            hit[player] = torpedo(player, cor, boards);
+        else turn(player, boards, hit, hp, sinks);
     }
 
-    public static String torpedo(int player, String cor,char[][][][] boards) {
+    public static String torpedo(int player, String cor, char[][][][] boards) {
         String hit = "";
-        if (boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == '~') {
+        int rival = 0;
+        if (player == 0) rival = 1;
+        if (boards[rival][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == '~') {
             hit = "";
-            boards[player][1][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = '#';
-            if (player == 0) boards[1][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = '#';
-            else boards[0][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = '#';
-        }
-        else {
-            if (boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 'r') hit = "carrier";
-            if (boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 't') hit = "battleship";
-            if (boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 'u') hit = "cruiser";
-            if (boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 'b') hit = "submarine";
-            if (boards[player][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 's') hit = "destroyer";
+            boards[player][1][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = '|';
+            if (player == 0) boards[1][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = '|';
+            else boards[0][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = '|';
+        } else {
+            if (boards[rival][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 'r') hit = "carrier";
+            if (boards[rival][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 't') hit = "battleship";
+            if (boards[rival][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 'u') hit = "cruiser";
+            if (boards[rival][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 'b') hit = "submarine";
+            if (boards[rival][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == 's') hit = "destroyer";
             boards[player][1][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = 'X';
             if (player == 0) boards[1][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = 'X';
             else boards[0][0][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] = 'X';
         }
         return hit;
+    }
+
+    public static void healthCalc(int[][] hp, char[][][][] boards) {
+        for (int i = 0; i < hp.length; i++) {
+            for (int j = 0; j < hp[0].length; j++) {
+                hp[i][j]=0;
+            }
+        }
+        for (int i = 0; i < boards.length; i++) {
+            for (int j = 0; j < boards[0][0].length; j++) {
+                for (int k = 0; k < boards[0][0][0].length; k++) {
+                    if (boards[i][0][j][k] == 'r') hp[i][0]++;
+                    if (boards[i][0][j][k] == 't') hp[i][1]++;
+                    if (boards[i][0][j][k] == 'u') hp[i][2]++;
+                    if (boards[i][0][j][k] == 'b') hp[i][3]++;
+                    if (boards[i][0][j][k] == 'e') hp[i][4]++;
+                }
+            }
+        }
     }
 
     public static void display(int player, int type, char[][][][] boards) {
@@ -238,6 +281,15 @@ public class BattleShipEloy {
         auto[2] = vh;
         return new String(auto);
     }
+
+    public static boolean check(int turn, boolean[][] sinks) {
+        for (int i = 0; i < sinks[0].length; i++) {
+            if (!sinks[turn][i]) return false;
+        }
+        return true;
+    }
+
+
     public static void clear() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }

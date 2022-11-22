@@ -12,8 +12,8 @@ public class Bot {
 
     public static String shoot(int difficulty) {
         char[] auto = new char[3];
-        auto[0] = (char) ('0' + Math.random() * 8);
-        auto[1] = (char) ('A' + Math.random() * 8);
+        auto[0] = (char) ('0' + Math.random() * 10);
+        auto[1] = (char) ('A' + Math.random() * 10);
         if (difficulty>=2){
             if (auto[0]+auto[1]%2==0)
                 return shoot(difficulty);

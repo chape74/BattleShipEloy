@@ -4,6 +4,7 @@ public class BattleShipEloy {
         String[] hit = {"", ""};
         boolean victory = false;
         int turn = 0, difficulty = 0, gameMode = 0;
+
         waterBoard(boards);
 
         while (gameMode != 1 && gameMode != 2) {

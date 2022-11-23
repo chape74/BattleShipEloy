@@ -13,7 +13,8 @@ public class ShootStage {
 
         String cor;
         if (player == 1 && difficulty > 0) {
-            cor = Bot.shoot(difficulty);
+            cor = Bot.shoot(difficulty,boards);
+            System.out.println(cor);
         } else cor = Scans.askCor();
 
         if (boards[player][1][cor.charAt(0) - '0'][cor.charAt(1) - 'A'] == '~')

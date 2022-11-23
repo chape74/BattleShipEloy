@@ -32,8 +32,9 @@ public class PlaceStage {
         Screen.display(player, 0, boards);
         System.out.print("Player " + (player + 1) + ", place your " + type + ": ");
         String cor;
-        if (true || player == 1 && difficulty > 0) {
+        if (player == 1 && difficulty > 0) {
             cor = Bot.place();
+            System.out.println(cor);
         } else cor = Scans.askCor();
 
         int size = boatType(type);

@@ -5,7 +5,10 @@ public class Scans {
     //Asks integer for menu selection.
     public static String askMenu() {
         Scanner sc = new Scanner(System.in);
-        if (!sc.hasNextInt()) return askMenu();
+        if (!sc.hasNextInt()) {
+            System.out.print("Please, input a number: ");
+            return askMenu();
+        }
         return sc.next();
     }
 

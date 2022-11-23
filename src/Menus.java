@@ -21,7 +21,7 @@ public class Menus {
         System.out.println();
         System.out.print("Select 1 to 2: ");
         selection = Scans.askMenu();
-        if (Integer.parseInt(selection) > 3 || Integer.parseInt(selection) < 1) {
+        if (Integer.parseInt(selection) > 2 || Integer.parseInt(selection) < 1) {
             return mainMenu();
         }
         return Integer.parseInt(selection);

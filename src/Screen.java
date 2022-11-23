@@ -11,6 +11,8 @@ public class Screen {
         System.out.println("P" + (player + 1) + "  A  B  C  D  E  F  G  H  I  J  P" + (player + 1));
         System.out.println();
     }
+
+    //Prints a lot of empty lines.
     public static void clear() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }

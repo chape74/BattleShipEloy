@@ -19,7 +19,7 @@ public class Bot {
                 return shoot(difficulty, boards);
         }
         double aimBot = Math.random();
-        if (aimBot > (1 - (0.075 * difficulty)) && difficulty >= 2) {
+        if (aimBot > (1 - (0.05 * difficulty)) && difficulty >= 2) {
             Loop:
             for (int j = 0; j < boards[0][0].length; j++) {
                 for (int k = 0; k < boards[0][0][0].length; k++) {
@@ -28,7 +28,7 @@ public class Bot {
                             boards[0][0][j][k] != 'X') {
                         auto[0] = (char) ('0' + j);
                         auto[1] = (char) ('A' + k);
-                        System.out.println("aimBot triggered on "+(char) ('0' + j)+""+(char) ('A' + k));
+                        System.out.print("aimBot triggered on ");
                         break Loop;
                     }
                 }

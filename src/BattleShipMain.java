@@ -1,6 +1,6 @@
-public class BattleShipEloy {
+public class BattleShipMain {
     public static void main(String[] args) {
-        char[][][][] boards = new char[2][2][10][10];
+        char[][][][] boards = new char[2][2][10][10] ;
         String[] hit = {"", ""};
         boolean victory = false;
         int turn = 0, difficulty = 0, gameMode = 0;
@@ -9,7 +9,6 @@ public class BattleShipEloy {
 
         while (gameMode != 1 && gameMode != 2) {
             gameMode = Menus.mainMenu();
-            if (gameMode == 3) System.out.println();
         }
 
         if (gameMode == 2) difficulty = Menus.difMenu();
@@ -29,6 +28,7 @@ public class BattleShipEloy {
 
     }
 
+    //Fills the array with Water chars.
     public static void waterBoard(char[][][][] a) {
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[0].length; j++) {
@@ -41,6 +41,7 @@ public class BattleShipEloy {
         }
     }
 
+    //Check victory condition, when a player has no segments from any boat.
     public static boolean check(char[][][][] boards) {
         int[][] hp = new int[2][5];
         for (int i = 0; i < boards.length; i++) {

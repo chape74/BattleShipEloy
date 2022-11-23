@@ -1,4 +1,6 @@
 public class Bot {
+
+    //Asks the bot for the coordinates for the Place Stage.
     public static String place() {
         char[] auto = new char[3];
         auto[0] = (char) ('0' + Math.random() * 8);
@@ -10,16 +12,21 @@ public class Bot {
         return new String(auto);
     }
 
+    //Asks the bot for the coordinates for the Shoot Stage, with some variations depending on difficulty.
     public static String shoot(int difficulty, char[][][][] boards) {
         char[] auto = new char[2];
         auto[0] = (char) ('0' + Math.random() * 10);
         auto[1] = (char) ('A' + Math.random() * 10);
+
+        //Hard difficulty will pick be forced to pick even coordinates.
         if (difficulty == 3) {
             if ((auto[0] + auto[1]) % 2 == 0)
                 return shoot(difficulty, boards);
         }
+
+        //Normal and hard will have forced chances to hit.
         double aimBot = Math.random();
-        if (aimBot > (1 - (0.05 * difficulty)) && difficulty >= 2) {
+        if (aimBot > (1 - (0.06 * difficulty)) && difficulty >= 2) {
             Loop:
             for (int j = 0; j < boards[0][0].length; j++) {
                 for (int k = 0; k < boards[0][0][0].length; k++) {

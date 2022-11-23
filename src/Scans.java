@@ -1,12 +1,15 @@
 import java.util.Scanner;
 
 public class Scans {
+
+    //Asks integer for menu selection.
     public static String askMenu() {
         Scanner sc = new Scanner(System.in);
         if (!sc.hasNextInt()) return askMenu();
         return sc.next();
     }
 
+    //Ask the first chars for coordinate selection.
     public static String askCor() {
         Scanner sc = new Scanner(System.in);
         String str = sc.next().toUpperCase() + "V  ";
@@ -22,6 +25,7 @@ public class Scans {
         return str;
     }
 
+    //Swaps the first and second char if they got ordered incorrectly.
     public static String swap(String swp) {
         char[] temp = swp.toCharArray();
         char temp2 = temp[0];

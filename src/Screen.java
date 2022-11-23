@@ -1,4 +1,6 @@
 public class Screen {
+
+    //Displays the full board of a player, and the type of board asked.
     public static void display(int player, int type, char[][][][] boards) {
         System.out.println("P" + (player + 1) + "  A  B  C  D  E  F  G  H  I  J  P" + (player + 1));
         for (int i = 0; i < boards[0][0].length; i++) {

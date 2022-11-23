@@ -2,13 +2,13 @@ public class BattleShipMain {
     public static void main(String[] args) {
 
         //The boards array consists of:
-        //1st dimension: Players
-        //2nd dimension: Board 0 is boats, 1 is shoots
+        //1st dimension: Player number.
+        //2nd dimension: Board 0 is boats, 1 is shoots.
         //3rd and 4th are the 0-9 and A-J coordinates of each board.
         char[][][][] boards = new char[2][2][10][10];
         waterBoard(boards);
 
-        //Other variables for later on
+        //Other variables for later on.
         String[] hit = {"", ""};
         boolean victory = false;
         int turn = 1, difficulty = 0, gameMode = 0;

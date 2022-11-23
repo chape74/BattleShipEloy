@@ -5,7 +5,9 @@ public class ShootStage {
 
         //Prepares the screen layout.
         Screen.clear();
+        System.out.println("        *  OUR SEA FIELD  *");
         Screen.display(player, 0, boards);
+        System.out.println("        * ENEMY SEA FIELD *");
         Screen.display(player, 1, boards);
 
         //Rival is the reverse of the player

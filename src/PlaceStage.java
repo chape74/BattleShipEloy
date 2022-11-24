@@ -1,5 +1,13 @@
+/**
+ * The first stage of BattleShip, place the boats
+ */
 public class PlaceStage {
-    //The boats that are added to the water field.
+    /**
+     * The boats that are added to the water field.
+     *
+     * @param boards     the boards and coordinates.
+     * @param difficulty the difficulty of the bot.
+     */
     public static void placeBoats(char[][][][] boards, int difficulty) {
         boat(0, "carrier", boards, difficulty);
         boat(0, "battleship", boards, difficulty);
@@ -13,7 +21,12 @@ public class PlaceStage {
         boat(1, "destroyer", boards, difficulty);
     }
 
-    //Switch to determine the size of the boats.
+    /**
+     * Switch to determine the size of the boats.
+     *
+     * @param type is the boat type.
+     * @return the size of said boat.
+     */
     public static int boatType(String type) {
         switch (type) {
             case "carrier":
@@ -29,7 +42,14 @@ public class PlaceStage {
         return 0;
     }
 
-    //Shows up the water board and asks where to place the boats.
+    /**
+     * Shows up the water board and asks where to place the boats.
+     *
+     * @param player     the turn of the player
+     * @param type       is the boat type.
+     * @param boards     the boards and coordinates.
+     * @param difficulty if greater than 0 means that is a bot.
+     */
     public static void boat(int player, String type, char[][][][] boards, int difficulty) {
 
         //Prepares the screen layout.
@@ -49,10 +69,10 @@ public class PlaceStage {
         //Check if the boats got placed out of bounds.
         if (cor.charAt(2) == 'V') {
             if (cor.charAt(0) - '0' + size > 9) {
-                cor = fix(cor, 0, size);
+                cor = fix(cor, false, size);
             }
         } else if (cor.charAt(1) - 'A' + size > 9) {
-            cor = fix(cor, 1, size);
+            cor = fix(cor, true, size);
         }
 
         //Check if a boat segment are colliding with another already placed segment, if so,
@@ -78,10 +98,17 @@ public class PlaceStage {
         }
     }
 
-    //Corrects the coordinates to place them back correctly.
-    public static String fix(String fx, int ch, int size) {
+    /**
+     * Corrects the coordinates to place them back correctly.
+     *
+     * @param fx   takes the cords string.
+     * @param vh   Vertical if false, Horizontal if true.
+     * @param size the boat size.
+     * @return the fixed cords
+     */
+    public static String fix(String fx, boolean vh, int size) {
         char[] temp = fx.toCharArray();
-        if (ch == 0) temp[0] = (char) ('9' - (size - 1));
+        if (vh) temp[0] = (char) ('9' - (size - 1));
         else temp[1] = (char) ('J' - (size - 1));
         fx = new String(temp);
         return fx;

@@ -1,5 +1,12 @@
+/**
+ * The menu sections before the first stage of BattleShip.
+ */
 public class Menus {
-    //Main menu with rules
+    /**
+     * Main menu with rules.
+     *
+     * @return the integer of the selection.
+     */
     public static int mainMenu() {
         String selection;
         Screen.clear();
@@ -27,7 +34,11 @@ public class Menus {
         return Integer.parseInt(selection);
     }
 
-    //Difficulty menu
+    /**
+     * Difficulty menu.
+     *
+     * @return the difficulty chosen.
+     */
     public static int difMenu() {
         String selection;
         Screen.clear();

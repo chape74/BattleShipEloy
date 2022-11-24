@@ -1,3 +1,6 @@
+/**
+ * Main class for the steps of each stage of the BattleShip game and some uncategorized methods.
+ */
 public class BattleShipMain {
     public static void main(String[] args) {
 
@@ -38,20 +41,29 @@ public class BattleShipMain {
 
     }
 
-    //Fills the array with Water chars.
-    public static void waterBoard(char[][][][] a) {
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < a[0].length; j++) {
-                for (int k = 0; k < a[0][0].length; k++) {
-                    for (int l = 0; l < a[0][0][0].length; l++) {
-                        a[i][j][k][l] = '~';
+    /**
+     * Fills the array with Water chars.
+     *
+     * @param boards the boards and coordinates.
+     */
+    public static void waterBoard(char[][][][] boards) {
+        for (int i = 0; i < boards.length; i++) {
+            for (int j = 0; j < boards[0].length; j++) {
+                for (int k = 0; k < boards[0][0].length; k++) {
+                    for (int l = 0; l < boards[0][0][0].length; l++) {
+                        boards[i][j][k][l] = '~';
                     }
                 }
             }
         }
     }
 
-    //Check victory condition, when a player has no segments from any boat.
+    /**
+     * Check victory condition, when a player has no segments from any boat.
+     *
+     * @param boards the boards and coordinates.
+     * @return the victory condition is met, when a player has 0 total hp on their boats.
+     */
     public static boolean check(char[][][][] boards) {
         int[][] hp = new int[2][5];
         for (int i = 0; i < boards.length; i++) {

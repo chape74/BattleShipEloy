@@ -1,6 +1,12 @@
+/**
+ * This class contains the instructions to replace the actions of the second player if "player vs computer" has been chosen.
+ */
 public class Bot {
-
-    //Asks the bot for the coordinates for the Place Stage.
+    /**
+     * Asks the bot for the coordinates for the Place Stage.
+     *
+     * @return the randomized cords and orientation.
+     */
     public static String place() {
         char[] auto = new char[3];
         auto[0] = (char) ('0' + Math.random() * 8);
@@ -12,7 +18,13 @@ public class Bot {
         return new String(auto);
     }
 
-    //Asks the bot for the coordinates for the Shoot Stage, with some variations depending on difficulty.
+    /**
+     * Asks the bot for the coordinates for the Shoot Stage, with some variations depending on difficulty.
+     *
+     * @param difficulty the difficulty of the bot.
+     * @param boards     the boards and coordinates.
+     * @return the randomized cords.
+     */
     public static String shoot(int difficulty, char[][][][] boards) {
         char[] auto = new char[2];
         auto[0] = (char) ('0' + Math.random() * 10);

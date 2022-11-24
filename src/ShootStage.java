@@ -1,6 +1,15 @@
+/**
+ * The second stage of BattleShip that loops till the end of the game, shoot the torpedoes!
+ */
 public class ShootStage {
-
-    //Beginning of each turn, showing up the board of shoots and boats, and asking where to shoot a torpedo.
+    /**
+     * Beginning of each turn, showing up the board of shoots and boats, and asking where to shoot a torpedo.
+     *
+     * @param player     the turn of the player.
+     * @param boards     the boards and coordinates.
+     * @param hit        the string with the boat type.
+     * @param difficulty the difficulty of the bot.
+     */
     public static void turn(int player, char[][][][] boards, String[] hit, int difficulty) {
 
         //Prepares the screen layout.
@@ -22,7 +31,7 @@ public class ShootStage {
         System.out.print("Player " + (player + 1) + ", where do you shoot?: ");
         String cor;
         if (player == 1 && difficulty > 0) {
-            cor = Bot.shoot(difficulty,boards);
+            cor = Bot.shoot(difficulty, boards);
             System.out.println(cor);
         } else cor = Scans.askCor();
 
@@ -32,7 +41,14 @@ public class ShootStage {
         else turn(player, boards, hit, difficulty);
     }
 
-    //Check if the coordinates hit a boat or water, if got boat, saves the type of boat that got hit.
+    /**
+     * Check if the coordinates hit a boat or water, if got boat, saves the type of boat that got hit.
+     *
+     * @param player the turn of the player.
+     * @param cor    the string with coordinates.
+     * @param boards the boards and coordinates.
+     * @return the string with the hurt boat type.
+     */
     public static String torpedo(int player, String cor, char[][][][] boards) {
         String hit = "";
         int rival = 0;
